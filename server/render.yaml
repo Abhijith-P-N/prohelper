@@ -1,0 +1,26 @@
+# Render blueprint — SecureSync API
+# Deploy: Render Dashboard → Blueprint → select this repo → specify server/render.yaml
+# (or paste this file at repo root).
+services:
+  - type: web
+    name: securasync-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false          # set in the dashboard after deploy
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: MASTER_KEY
+        sync: false          # rotate to a fresh 64-hex value
+      - key: JWT_SECRET
+        sync: false
+      - key: STORAGE_BUCKET
+        value: secure-blobs
+      - key: CORS_ORIGIN
+        sync: false          # e.g. https://your-app.vercel.app

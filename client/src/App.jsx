@@ -21,8 +21,9 @@ import Chat from './pages/Chat'
 import Settings from './pages/Settings'
 
 function RequireAuth() {
-  const { user } = useAuth()
+  const { user, initializing } = useAuth()
   const { ready, error, reload } = useWorkspace()
+  if (initializing) return <div className="p-8"><LoadingBlock label="Restoring session…" /></div>
   if (!user) return <Navigate to="/login" replace />
   if (!ready) return <div className="p-8"><LoadingBlock label="Syncing workspace with Supabase…" /></div>
   if (error) {
